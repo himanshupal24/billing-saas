@@ -59,7 +59,7 @@ export default function OnboardingPage() {
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/10 to-background p-4">
         <Card className="w-full max-w-2xl">
           <CardHeader className="text-center">
-            <CardTitle className="text-3xl">Welcome! Let&apos;s set up your business</CardTitle>
+            <CardTitle className="text-3xl">Welcome! <h2>Let&apos;s setup your business</h2></CardTitle>
             <CardDescription>
               This will only take a minute. We&apos;ll create one demo customer account to get you started.
             </CardDescription>
