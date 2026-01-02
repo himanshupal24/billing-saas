@@ -68,7 +68,7 @@ export default function CustomersPage() {
       });
       setDialogOpen(false);
       setFormData({ name: '', phone: '', email: '', address: '' });
-      loadCustomers();
+      loadData();
     } catch (error) {
       toast({
         title: 'Error',
