@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { Layout } from '@/components/Layout';
@@ -13,7 +13,7 @@ import { ArrowLeft, Plus, Trash2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
-export default function NewInvoicePage() {
+function NewInvoiceForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [customers, setCustomers] = useState([]);
@@ -145,9 +145,7 @@ export default function NewInvoicePage() {
   const totals = calculateTotals();
 
   return (
-    <ProtectedRoute requireBusiness>
-      <Layout>
-        <div className="space-y-6">
+    <div className="space-y-6">
           <div className="flex items-center gap-4">
             <Button variant="ghost" onClick={() => router.back()}>
               <ArrowLeft className="mr-2 h-4 w-4" />
@@ -326,7 +324,21 @@ export default function NewInvoicePage() {
               </div>
             </div>
           </form>
-        </div>
+    </div>
+  );
+}
+
+export default function NewInvoicePage() {
+  return (
+    <ProtectedRoute requireBusiness>
+      <Layout>
+        <Suspense fallback={
+          <div className="flex items-center justify-center h-64">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+          </div>
+        }>
+          <NewInvoiceForm />
+        </Suspense>
       </Layout>
     </ProtectedRoute>
   );

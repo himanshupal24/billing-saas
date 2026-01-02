@@ -4,6 +4,8 @@ import Invoice from '@/models/Invoice';
 import Business from '@/models/Business';
 import { requireAuth } from '@/lib/auth';
 
+export const dynamic = 'force-dynamic';
+
 // Dynamically import jsPDF for server-side rendering
 async function getJsPDF() {
   const { default: jsPDF } = await import('jspdf');

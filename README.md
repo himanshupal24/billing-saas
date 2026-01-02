@@ -173,19 +173,125 @@ src/
 
 ## Deployment
 
-### Vercel Deployment
+### Vercel Deployment (Recommended)
 
-1. Push code to GitHub
-2. Import project in Vercel
-3. Add environment variables in Vercel dashboard
-4. Deploy
+#### Prerequisites
+1. **MongoDB Atlas Account** (Free tier available)
+   - Go to [MongoDB Atlas](https://www.mongodb.com/cloud/atlas/register)
+   - Create a free cluster
+   - Create a database user
+   - Whitelist IP address (use `0.0.0.0/0` for all IPs, or Vercel's IP ranges)
+   - Get your connection string (format: `mongodb+srv://username:password@cluster.mongodb.net/dbname`)
 
-### MongoDB Atlas Setup
+2. **GitHub Account** (to host your code)
 
-1. Create MongoDB Atlas account
-2. Create cluster
-3. Get connection string
-4. Update `MONGODB_URI` in environment variables
+#### Step-by-Step Deployment
+
+1. **Push to GitHub**
+   ```bash
+   git init
+   git add .
+   git commit -m "Initial commit"
+   git branch -M main
+   git remote add origin https://github.com/yourusername/your-repo-name.git
+   git push -u origin main
+   ```
+
+2. **Import to Vercel**
+   - Go to [Vercel](https://vercel.com)
+   - Click "Add New Project"
+   - Import your GitHub repository
+   - Vercel will auto-detect Next.js settings
+
+3. **Configure Environment Variables**
+   
+   In Vercel project settings → Environment Variables, add:
+   
+   ```
+   MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/dbname
+   JWT_SECRET=your-generated-secret-key-here
+   NEXT_PUBLIC_APP_URL=https://your-app-name.vercel.app
+   ```
+   
+   **Generate JWT Secret:**
+   ```bash
+   node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+   ```
+
+4. **Deploy**
+   - Click "Deploy"
+   - Wait for build to complete
+   - Your app will be live at `https://your-app-name.vercel.app`
+
+5. **Update MongoDB IP Whitelist** (if needed)
+   - After deployment, Vercel will show your deployment URL
+   - If MongoDB connection fails, ensure your MongoDB Atlas IP whitelist includes:
+     - `0.0.0.0/0` (allows all IPs - less secure but easier)
+     - Or add Vercel's specific IP ranges
+
+#### MongoDB Atlas Setup Details
+
+1. **Create MongoDB Atlas Account**
+   - Sign up at [mongodb.com/cloud/atlas](https://www.mongodb.com/cloud/atlas/register)
+
+2. **Create a Cluster**
+   - Choose "Free" tier (M0)
+   - Select a cloud provider and region closest to your users
+   - Click "Create Cluster"
+
+3. **Create Database User**
+   - Go to "Database Access" → "Add New Database User"
+   - Choose "Password" authentication
+   - Set username and strong password (save these!)
+   - Set privileges to "Read and write to any database"
+
+4. **Whitelist IP Addresses**
+   - Go to "Network Access" → "Add IP Address"
+   - For development: Add your current IP
+   - For Vercel: Add `0.0.0.0/0` (allows all IPs) or specific Vercel IPs
+   - Click "Add IP Address"
+
+5. **Get Connection String**
+   - Go to "Database" → "Connect"
+   - Choose "Connect your application"
+   - Copy the connection string
+   - Replace `<password>` with your database user password
+   - Replace `<dbname>` with your desired database name (e.g., `simple-billing`)
+
+#### Environment Variables Reference
+
+| Variable | Description | Example |
+|----------|-------------|---------|
+| `MONGODB_URI` | MongoDB connection string | `mongodb+srv://user:pass@cluster.mongodb.net/dbname` |
+| `JWT_SECRET` | Secret key for JWT tokens (32+ characters) | Generated random hex string |
+| `NEXT_PUBLIC_APP_URL` | Your Vercel app URL | `https://your-app.vercel.app` |
+
+#### Post-Deployment Checklist
+
+- [ ] Test signup/login functionality
+- [ ] Verify MongoDB connection is working
+- [ ] Test invoice creation and PDF generation
+- [ ] Check all API endpoints are responding
+- [ ] Verify environment variables are set correctly
+- [ ] Test on mobile devices (responsive design)
+- [ ] Set up custom domain (optional)
+
+#### Troubleshooting
+
+**Build Fails:**
+- Check build logs in Vercel dashboard
+- Ensure all dependencies are in `package.json`
+- Verify Node.js version compatibility (18+)
+
+**MongoDB Connection Errors:**
+- Verify `MONGODB_URI` is correct in Vercel environment variables
+- Check IP whitelist includes Vercel IPs or `0.0.0.0/0`
+- Ensure database user has correct permissions
+
+**Authentication Not Working:**
+- Verify `JWT_SECRET` is set in environment variables
+- Check that `JWT_SECRET` is the same across all environments
+- Clear browser localStorage and try again
 
 ## Security Features
 

@@ -6,6 +6,8 @@ import Customer from '@/models/Customer';
 import LedgerEntry from '@/models/LedgerEntry';
 import { requireAuth } from '@/lib/auth';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(req) {
   try {
     const userId = await requireAuth(req);

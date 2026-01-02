@@ -7,6 +7,8 @@ import LedgerEntry from '@/models/LedgerEntry';
 import { requireAuth } from '@/lib/auth';
 import { generateInvoiceNumber, calculateInvoiceTotals } from '@/lib/utils';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(req) {
   try {
     const userId = await requireAuth(req);

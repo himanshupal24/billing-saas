@@ -4,6 +4,8 @@ import User from '@/models/User';
 import Business from '@/models/Business';
 import { comparePassword, generateToken } from '@/lib/auth';
 
+export const dynamic = 'force-dynamic';
+
 export async function POST(req) {
   try {
     await connectDB();
